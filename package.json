@@ -1,0 +1,7 @@
+{
+  "name": "widrio-ble",
+  "version": "0.0.1",
+  "dependencies": {
+    "noble": "1.8.1"
+  }
+}
