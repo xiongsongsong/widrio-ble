@@ -4,7 +4,9 @@ const server = require('http').createServer(app.callback());
 const io = require('socket.io')(server)
 const serve = require('koa-static')
 const noble = require('noble')
-const bleRe = /^CN[0-9a-f]{12}$/
+// CN0028001000001
+
+const bleRe = /^CN[0-9a-f]{13}$/
 
 app.use(serve(__dirname + '/node_modules'))
 app.use(serve(__dirname + '/static'))
@@ -46,7 +48,6 @@ noble.on('stateChange', function (state) {
   }
 });
 
-// CN0028001000001
 noble.on('discover', function (peripheral) {
   let name = peripheral.advertisement.localName
   let data = peripheral.advertisement.manufacturerData
