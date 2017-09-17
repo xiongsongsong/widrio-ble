@@ -21,11 +21,23 @@ const App = new Vue({
     }
   },
   methods: {
-    notify(data) {
-      if (_.find(this.ble, (item) => item.name === data.name)) {
-        return
+    notify(res) {
+      let index = _.findIndex(this.ble, (item) => item.name === res.name)
+
+      // 如果是护士操作
+      if (res.data === 'nurse' && index >= 0) {
+        this.ble.splice(index, 1)
+        return;
       }
-      this.ble.push(data)
+
+      if (res.data === 'patient') {
+        if (index < 0) {
+          res.click = 1
+          this.ble.push(res)
+        } else {
+          this.ble[index].click += 1
+        }
+      }
     }
   }
 })

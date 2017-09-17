@@ -13,4 +13,5 @@ html
       .led-wrapper(v-for="item in ble")
         .patient
           .text {{item.name | simple}}
+          .time(v-if="item.click>1") 呼叫了{{item.click}}次
     script(src='/home.js')

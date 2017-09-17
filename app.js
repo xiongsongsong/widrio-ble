@@ -33,7 +33,7 @@ app.listen(3000)
 server.listen(3001)
 
 io.on('connection', function () {
-  console.log('console')
+  //
 });
 
 /*
@@ -49,6 +49,7 @@ noble.on('stateChange', function (state) {
 
 noble.on('discover', function (peripheral) {
   let name = peripheral.advertisement.localName
+  console.log(name)
   let data = peripheral.advertisement.manufacturerData.toString()
   if (!bleRe.test(name)) {
     return
