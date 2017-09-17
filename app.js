@@ -36,7 +36,6 @@ io.on('connection', function () {
   console.log('console')
 });
 
-
 /*
 * 开始监听蓝牙
 * */
@@ -50,7 +49,7 @@ noble.on('stateChange', function (state) {
 
 noble.on('discover', function (peripheral) {
   let name = peripheral.advertisement.localName
-  let data = peripheral.advertisement.manufacturerData
+  let data = peripheral.advertisement.manufacturerData.toString()
   if (!bleRe.test(name)) {
     return
   }

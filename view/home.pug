@@ -5,6 +5,12 @@ html
     title 诊所呼叫系统--若水医疗
     script(src='/vue/dist/vue.min.js')
     script(src='/socket.io-client/dist/socket.io.slim.js')
+    script(src='/moment/min/moment-with-locales.min.js')
+    script(src='/lodash/lodash.min.js')
+    link(rel='stylesheet',type='text/css',href='/home.css')
   body
-    h1  Hello SOS
+    #app
+      .led-wrapper(v-for="item in ble")
+        .patient
+          .text {{item.name | simple}}
     script(src='/home.js')
