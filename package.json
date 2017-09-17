@@ -2,6 +2,13 @@
   "name": "widrio-ble",
   "version": "0.0.1",
   "dependencies": {
-    "noble": "1.8.1"
+    "koa": "^2.3.0",
+    "koa-pug": "^3.0.0-2",
+    "koa-static": "^4.0.1",
+    "lodash": "^4.17.4",
+    "moment": "^2.18.1",
+    "noble": "1.8.1",
+    "socket.io": "^2.0.3",
+    "vue": "^2.4.4"
   }
 }

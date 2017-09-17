@@ -1,24 +1,60 @@
-var noble = require('noble')
+const Koa = require('koa')
+const app = new Koa()
+const server = require('http').createServer(app.callback());
+const io = require('socket.io')(server)
+const serve = require('koa-static')
+const noble = require('noble')
+const bleRe = /^CN[0-9a-f]{12}$/
 
+app.use(serve(__dirname + '/node_modules'))
+app.use(serve(__dirname + '/static'))
 
-noble.on('stateChange', function (state) {
-  console.log(state)
-  if (state === 'poweredOn') {
-    noble.startScanning([], true, function (err, res) {
-      console.log(err, res)
-    }); // particular UUID's
-  }
+const Pug = require('koa-pug')
+const pug = new Pug({
+  viewPath: './view',
+  debug: true,
+  pretty: false,
+  noCache: true,
+  compileDebug: false,
+  basedir: __dirname,
+  helperPath: [
+    {_: require('lodash')}
+  ],
+  app: app
+})
+
+app.use(ctx => {
+  ctx.render('home')
+});
+
+app.listen(3000)
+server.listen(3001)
+
+io.on('connection', function () {
+  console.log('console')
 });
 
 
-noble.on('discover', function (peripheral) {
-  if (peripheral.advertisement.localName !== '3ab87438') return;
-  console.log('RSSI' + peripheral.rssi, peripheral.advertisement.localName);
+/*
+* 开始监听蓝牙
+* */
+noble.on('stateChange', function (state) {
+  if (state === 'poweredOn') {
+    noble.startScanning([], true, function (err, res) {
+      //
+    });
+  }
+});
 
-  if (peripheral.advertisement.manufacturerData) {
-    console.log('manufacturer data:', JSON.stringify(peripheral.advertisement.manufacturerData.toString('hex')));
+// CN0028001000001
+noble.on('discover', function (peripheral) {
+  let name = peripheral.advertisement.localName
+  let data = peripheral.advertisement.manufacturerData
+  if (!bleRe.test(name)) {
+    return
   }
-  if (peripheral.advertisement.txPowerLevel !== undefined) {
-    console.log('\tmy TX power level is:' + peripheral.advertisement.txPowerLevel);
-  }
+  io.emit('ble', {
+    name,
+    data
+  })
 });
